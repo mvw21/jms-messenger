@@ -52,6 +52,17 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>jms-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>business-logic</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
 
         <!-- Jakarta Bean Validation API -->
@@ -79,7 +90,36 @@
             <artifactId>spring-data-jpa</artifactId>
             <version>3.5.4</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>3.0-rc5</version>
+        </dependency>
+
     </dependencies>
     </dependencyManagement>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.12</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.core</groupId>-->
+<!--            <artifactId>jackson-annotations</artifactId>-->
+<!--            <version>3.0-rc5</version>-->
+<!--        </dependency>-->
+    </dependencies>
 
 </project>

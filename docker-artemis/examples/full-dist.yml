@@ -1,0 +1,23 @@
+services:
+
+  msg-broker:
+    container_name: msg-broker
+    image: docker.dev.brandmaker.com/messenger-broker:${MSG_VERSION}
+    environment:
+      - CLEAN_ON_START=true
+      - JMS_USER_NAME=${JMS_USER}
+      - JMS_USER_PASS=${JMS_PASSWORD}
+      - JVM_MEMORY=-Xms1g -Xmx4g
+    volumes:
+      - type: bind
+        source: ${MSG_JMS_BROKER_STORAGE_DIRECTORY}
+        target: /runtime/artemis-broker-brandmaker-data
+    networks:
+      - msg_network
+    ports:
+      - "8020:8020"
+      - "8161:8161"
+      - "61616:61616"
+
+networks:
+  msg_network:

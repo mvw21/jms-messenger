@@ -28,6 +28,13 @@
             <artifactId>hibernate-tools</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>11.15.0</version>
+        </dependency>
+
 
     </dependencies>
 
