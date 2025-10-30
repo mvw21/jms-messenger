@@ -21,56 +21,120 @@
         <module>dao</module>
     </modules>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>17</java.version>
+
+        <plugin.maven.compiler.version>3.8.1</plugin.maven.compiler.version>
+        <plugin.maven.jar.version>3.1.2</plugin.maven.jar.version>
+        <plugin.maven.source.version>3.2.0</plugin.maven.source.version>
+        <plugin.maven.resources.version>3.0.2</plugin.maven.resources.version>
+        <plugin.surefire.version>2.22.1</plugin.surefire.version>
+
+        <cs.bom.version>1.2.0-SNAPSHOT</cs.bom.version>
+        <cs.commons.version>1.2.0-SNAPSHOT</cs.commons.version>
+
+        <spring-boot.version>3.5.7</spring-boot.version>
+        <tomcat-jasper-el.version>8.5.14</tomcat-jasper-el.version>
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
+        <rest-assured.version>4.4.0</rest-assured.version>
+
+        <!-- Docker Images versioning -->
+        <cs.docker.image.tag>1.1.0</cs.docker.image.tag>
+
+        <msg.mysql.version.tag>${cs.docker.image.tag}</msg.mysql.version.tag>
+        <msg.mysql.version>docker.dev.brandmaker.com/cs-mysql:${msg.mysql.version.tag}</msg.mysql.version>
+
+        <msg.version.tag>${project.version}</msg.version.tag>
+        <msg.version>docker.dev.brandmaker.com/messenger:${msg.version.tag}</msg.version>
+
     </properties>
+
+
 
 
     <dependencyManagement>
     <dependencies>
 
-        <!-- Internal dependencies -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>dao-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>jms-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>business-logic</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+
+
+
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
+<!--        hibernate-tools is a very old Hibernate plugin used historically for:-->
+<!--        reverse engineering DB schemas into entities-->
+<!--        generating mappings (.hbm.xml files)-->
+<!--        codegen outside runtime-->
+<!--        It is not part of runtime Hibernate ORM or Spring Boot JPA, and:-->
+<!--        It does not belong in a modern Spring Boot / JPA project-->
+<!--        It conflicts with newer Hibernate versions managed by Spring Boot BOM-->
+<!--        You aren’t using .hbm.xml anymore if you move to JPA annotations and Flyway-->
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>dao-api</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-tools</artifactId>
+            <version>5.6.15.Final</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>dao</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>jms-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>business-logic</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-
+        <!--        Remove , because The Spring Boot BOM already manages jakarta.validation and Jackson versions.-->
         <!-- Jakarta Bean Validation API -->
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-            <version>3.0.2</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>jakarta.validation</groupId>-->
+<!--            <artifactId>jakarta.validation-api</artifactId>-->
+<!--            <version>3.0.2</version>-->
+<!--        </dependency>-->
+
+        <!-- REMOVE these manual Spring/Hibernate versions (Boot BOM manages them): -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.data</groupId>-->
+<!--            <artifactId>spring-data-jpa</artifactId>-->
+<!--            <version>3.5.4</version>-->
+<!--        </dependency>-->
+
+        <!--        Remove , because The Spring Boot BOM already manages jakarta.validation and Jackson versions.-->
+        <!-- Jakarta Bean Validation API -->
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.core</groupId>-->
+<!--            <artifactId>jackson-annotations</artifactId>-->
+<!--            <version>3.0-rc5</version>-->
+<!--        </dependency>-->
+
 
         <dependency>
             <groupId>org.hibernate.validator</groupId>
@@ -78,25 +142,6 @@
             <version>${hibernate-validator.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-tools</artifactId>
-            <version>5.6.15.Final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>3.5.4</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>3.0-rc5</version>
-        </dependency>
 
     </dependencies>
     </dependencyManagement>
@@ -104,16 +149,30 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.12</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.4.14</version>
-        </dependency>
+
+
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-web</artifactId>-->
+<!--            <version>${spring-boot.version}</version>-->
+<!--        </dependency>-->
+
+<!--        Remove manual logging overrides Because Spring Boot starter already brings correct logging versions spring-data-jpa, hibernate-validator, jackson-annotations, etc-->
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-api</artifactId>-->
+<!--            <version>2.0.12</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>ch.qos.logback</groupId>-->
+<!--            <artifactId>logback-classic</artifactId>-->
+<!--            <version>1.4.14</version>-->
+<!--        </dependency>-->
+
+
+
+
+
 
 <!--        <dependency>-->
 <!--            <groupId>com.fasterxml.jackson.core</groupId>-->
@@ -121,5 +180,72 @@
 <!--            <version>3.0-rc5</version>-->
 <!--        </dependency>-->
     </dependencies>
+
+    <build>
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+            <plugins>
+                <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${plugin.maven.source.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${plugin.maven.resources.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${plugin.maven.compiler.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${plugin.surefire.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${plugin.maven.jar.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+                <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.7.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
 
 </project>

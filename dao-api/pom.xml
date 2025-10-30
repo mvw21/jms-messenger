@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>dao-api</artifactId>
+    <packaging>jar</packaging>
+    <name>dao-api</name>
 
     <dependencies>
         <dependency>

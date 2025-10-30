@@ -34,7 +34,7 @@ public class PersistenceConfig
         sessionFactory.setConfigLocation(new ClassPathResource("hibernate.cfg.xml"));
         sessionFactory.setDataSource(dataSource);
 //        sessionFactory.getHibernateProperties().setProperty(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQLDialect");
-        sessionFactory.getHibernateProperties().setProperty(AvailableSettings.DIALECT, "org.hibernate.dialect.MariaDB102Dialect");
+//        sessionFactory.getHibernateProperties().setProperty(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
         sessionFactory.getHibernateProperties().setProperty(AvailableSettings.SHOW_SQL, "false");
 
         return sessionFactory;
