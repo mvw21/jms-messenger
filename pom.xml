@@ -36,18 +36,12 @@
         <cs.commons.version>1.2.0-SNAPSHOT</cs.commons.version>
 
         <spring-boot.version>3.5.7</spring-boot.version>
-        <tomcat-jasper-el.version>8.5.14</tomcat-jasper-el.version>
-        <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
-        <rest-assured.version>4.4.0</rest-assured.version>
 
         <!-- Docker Images versioning -->
-        <cs.docker.image.tag>1.1.0</cs.docker.image.tag>
+        <cs.docker.image.tag>8.4</cs.docker.image.tag>
 
-        <msg.mysql.version.tag>${cs.docker.image.tag}</msg.mysql.version.tag>
-        <msg.mysql.version>docker.dev.brandmaker.com/cs-mysql:${msg.mysql.version.tag}</msg.mysql.version>
-
-        <msg.version.tag>${project.version}</msg.version.tag>
-        <msg.version>docker.dev.brandmaker.com/messenger:${msg.version.tag}</msg.version>
+<!--        <msg.mysql.version.tag>${cs.docker.image.tag}</msg.mysql.version.tag>-->
+<!--        <msg.mysql.version>docker.dev.jmsapp.com/cs-mysql:${msg.mysql.version.tag}</msg.mysql.version>-->
 
     </properties>
 
@@ -55,8 +49,7 @@
 
 
     <dependencyManagement>
-    <dependencies>
-
+        <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -65,85 +58,64 @@
                 <scope>import</scope>
             </dependency>
 
-            <dependency>
-                <groupId>org.example</groupId>
-                <artifactId>dao-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.example</groupId>
-                <artifactId>dao</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.example</groupId>
-                <artifactId>domain</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.example</groupId>
-                <artifactId>jms-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.example</groupId>
                 <artifactId>business-logic</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>dao-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>jms-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>jms-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate.common</groupId>
+                <artifactId>hibernate-commons-annotations</artifactId>
+                <version>6.0.6.Final</version>
+            </dependency>
+
+<!--            &lt;!&ndash; https://mvnrepository.com/artifact/org.hibernate/hibernate-tools &ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>org.hibernate</groupId>-->
+<!--                <artifactId>hibernate-tools</artifactId>-->
+<!--                <version>5.6.15.Final</version>-->
+<!--            </dependency>-->
 
 
-
-
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
-<!--        hibernate-tools is a very old Hibernate plugin used historically for:-->
-<!--        reverse engineering DB schemas into entities-->
-<!--        generating mappings (.hbm.xml files)-->
-<!--        codegen outside runtime-->
-<!--        It is not part of runtime Hibernate ORM or Spring Boot JPA, and:-->
-<!--        It does not belong in a modern Spring Boot / JPA project-->
-<!--        It conflicts with newer Hibernate versions managed by Spring Boot BOM-->
-<!--        You aren’t using .hbm.xml anymore if you move to JPA annotations and Flyway-->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-tools</artifactId>
-            <version>5.6.15.Final</version>
-        </dependency>
-
-        <!--        Remove , because The Spring Boot BOM already manages jakarta.validation and Jackson versions.-->
-        <!-- Jakarta Bean Validation API -->
-<!--        <dependency>-->
-<!--            <groupId>jakarta.validation</groupId>-->
-<!--            <artifactId>jakarta.validation-api</artifactId>-->
-<!--            <version>3.0.2</version>-->
-<!--        </dependency>-->
-
-        <!-- REMOVE these manual Spring/Hibernate versions (Boot BOM manages them): -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.data</groupId>-->
-<!--            <artifactId>spring-data-jpa</artifactId>-->
-<!--            <version>3.5.4</version>-->
-<!--        </dependency>-->
-
-        <!--        Remove , because The Spring Boot BOM already manages jakarta.validation and Jackson versions.-->
-        <!-- Jakarta Bean Validation API -->
-
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
-<!--        <dependency>-->
-<!--            <groupId>com.fasterxml.jackson.core</groupId>-->
-<!--            <artifactId>jackson-annotations</artifactId>-->
-<!--            <version>3.0-rc5</version>-->
-<!--        </dependency>-->
-
-
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator.version}</version>
-        </dependency>
-
-
-    </dependencies>
+        </dependencies>
     </dependencyManagement>
 
 

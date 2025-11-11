@@ -25,7 +25,7 @@ under the License.
     <core xmlns="urn:activemq:core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="urn:activemq:core ">
 
-        <name>brandmaker</name>
+        <name>jmsapp</name>
 
 
         <persistence-enabled>true</persistence-enabled>
@@ -36,10 +36,10 @@ under the License.
              NIO: Plain Java Files
          -->
         <journal-type>NIO</journal-type>
-        <paging-directory>/runtime/artemis-broker-brandmaker-data/paging</paging-directory>
-        <bindings-directory>/runtime/artemis-broker-brandmaker-data/bindings</bindings-directory>
-        <journal-directory>/runtime/artemis-broker-brandmaker-data/journal</journal-directory>
-        <large-messages-directory>/runtime/artemis-broker-brandmaker-data/large-messages</large-messages-directory>
+        <paging-directory>/runtime/artemis-broker-jmsapp-data/paging</paging-directory>
+        <bindings-directory>/runtime/artemis-broker-jmsapp-data/bindings</bindings-directory>
+        <journal-directory>/runtime/artemis-broker-jmsapp-data/journal</journal-directory>
+        <large-messages-directory>/runtime/artemis-broker-jmsapp-data/large-messages</large-messages-directory>
         <journal-datasync>true</journal-datasync>
         <journal-min-files>2</journal-min-files>
         <journal-pool-files>10</journal-pool-files>
@@ -144,15 +144,15 @@ under the License.
 
         <security-settings>
             <security-setting match="#">
-                <permission type="createNonDurableQueue" roles="admin, brandmaker"/>
-                <permission type="deleteNonDurableQueue" roles="admin, brandmaker"/>
-                <permission type="createDurableQueue" roles="admin, brandmaker"/>
+                <permission type="createNonDurableQueue" roles="admin, jmsapp"/>
+                <permission type="deleteNonDurableQueue" roles="admin, jmsapp"/>
+                <permission type="createDurableQueue" roles="admin, jmsapp"/>
                 <permission type="deleteDurableQueue" roles="admin"/>
-                <permission type="createAddress" roles="admin, brandmaker"/>
+                <permission type="createAddress" roles="admin, jmsapp"/>
                 <permission type="deleteAddress" roles="admin"/>
-                <permission type="consume" roles="admin, brandmaker"/>
-                <permission type="browse" roles="admin, brandmaker"/>
-                <permission type="send" roles="admin, brandmaker"/>
+                <permission type="consume" roles="admin, jmsapp"/>
+                <permission type="browse" roles="admin, jmsapp"/>
+                <permission type="send" roles="admin, jmsapp"/>
                 <!-- we need this otherwise ./artemis.sh data imp wouldn't work -->
                 <permission type="manage" roles="admin"/>
             </security-setting>

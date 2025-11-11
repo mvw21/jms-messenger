@@ -3,6 +3,7 @@ package org.example.app;
 import jakarta.jms.ConnectionFactory;
 import jakarta.jms.Destination;
 import jakarta.jms.JMSContext;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.example.AdministrationEndpoint;
 import org.example.ChatEndpoint;
 import org.example.EndpointRegistry;
@@ -26,7 +27,7 @@ public class EndpointRegistryImpl extends AbstractEndpointRegistry implements En
 
     private final ResponseReceiver responseReceiver;
 
-    public EndpointRegistryImpl(ConnectionFactory jmsContextFactory, String clientId)
+    public EndpointRegistryImpl(ActiveMQConnectionFactory jmsContextFactory, String clientId)
     {
         this.connectionFactory = jmsContextFactory;
 

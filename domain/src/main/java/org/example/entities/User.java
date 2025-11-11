@@ -1,5 +1,8 @@
 package org.example.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,7 +12,14 @@ import org.hibernate.validator.constraints.Length;
 import java.util.UUID;
 
 import static org.example.constants.Constants.*;
-
+@Entity
+@Table(
+        name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uc_user_email", columnNames = "email"),
+                @UniqueConstraint(name = "uc_user_username", columnNames = "username")
+        }
+)
 public class User extends AbstractEntity {
 
     @NotNull(message = EMAIL_NULL_ERROR_MESSAGE)
@@ -25,7 +35,7 @@ public class User extends AbstractEntity {
     @Length(min=3, max=20, message = PASSWORD_LENGTH_ERROR_MESSAGE)
     private String password;
 
-    protected User() {
+    public User() {
         super();
     }
 

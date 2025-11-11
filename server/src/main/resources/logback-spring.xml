@@ -29,15 +29,15 @@
 
     <!-- Default -->
     <springProfile name="dev">
-        <logger name="com.brandmaker.app" level="DEBUG"/>
+        <logger name="com.jmsapp.app" level="DEBUG"/>
     </springProfile>
 
     <springProfile name="staging">
-        <logger name="com.brandmaker.app" level="INFO"/>
+        <logger name="com.jmsapp.app" level="INFO"/>
     </springProfile>
 
     <springProfile name="production">
-        <logger name="com.brandmaker.app" level="ERROR"/>
+        <logger name="com.jmsapp.app" level="ERROR"/>
     </springProfile>
 
     <!-- 3rd party -->

@@ -1,0 +1,20 @@
+services:
+  jms-client:
+    container_name: jms-client
+    build:
+      context: ..                  # <-- repo root (one level up)
+      dockerfile: jms-client/Dockerfile
+    environment:
+      BROKER_URL: "tcp://msg-broker:61616"
+      BROKER_USERNAME: "${ARTEMIS_USER:-admin}"
+      BROKER_PASSWORD: "${ARTEMIS_PASSWORD:-admin}"
+      QUEUE: "queue.test"
+      PAYLOAD: "Hello from jms-client"
+      DEBUG: "true"
+    networks: [msg_network]
+    ports:
+      - "5005:5005"
+
+networks:
+  msg_network:
+    external: true

@@ -4,8 +4,9 @@ package org.example.app;
 import org.example.DaoProvider;
 import org.example.DaoProviderFactory;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class DaoProviderFactoryImpl implements DaoProviderFactory {
 
     private final SessionFactory sessionFactory;

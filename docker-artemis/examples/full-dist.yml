@@ -1,23 +1,21 @@
 services:
-
   msg-broker:
+    image: apache/activemq-artemis:2.43.0
     container_name: msg-broker
-    image: docker.dev.brandmaker.com/messenger-broker:${MSG_VERSION}
     environment:
-      - CLEAN_ON_START=true
-      - JMS_USER_NAME=${JMS_USER}
-      - JMS_USER_PASS=${JMS_PASSWORD}
-      - JVM_MEMORY=-Xms1g -Xmx4g
+      ARTEMIS_USERNAME: admin
+      ARTEMIS_PASSWORD: admin
+      ARTEMIS_MIN_MEMORY: 512M
+      ARTEMIS_MAX_MEMORY: 2048M
+    ports:
+      - "61616:61616"   # JMS
+      - "8161:8161"     # Web console
     volumes:
-      - type: bind
-        source: ${MSG_JMS_BROKER_STORAGE_DIRECTORY}
-        target: /runtime/artemis-broker-brandmaker-data
+      - ./runtime/artemis:/var/lib/artemis-instance   # optional but recommended
     networks:
       - msg_network
-    ports:
-      - "8020:8020"
-      - "8161:8161"
-      - "61616:61616"
 
 networks:
   msg_network:
+    name: msg_network
+
