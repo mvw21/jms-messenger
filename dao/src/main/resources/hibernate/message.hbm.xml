@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="com.brandmaker.core.app.entities">
+<hibernate-mapping package="com.jmsapp.core.app.entities">
     <class name = "Message" table = "messages">
 
         <id name = "id" column = "message_id" type = "org.hibernate.type.UUIDCharType" >
@@ -13,10 +13,10 @@
 
         <property name = "version" column = "version" type = "int"/>
 
-        <many-to-one name="author" class="com.brandmaker.core.app.entities.User"
+        <many-to-one name="author" class="com.jmsapp.core.app.entities.User"
                      column="author_id" not-null="true" foreign-key="FK_messages_authors"/>
 
-        <many-to-one name="recipient" class="com.brandmaker.core.app.entities.User"
+        <many-to-one name="recipient" class="com.jmsapp.core.app.entities.User"
                      column="recipient_id" not-null="true" foreign-key="FK_messages_recipients"/>
 
         <property name = "content" column = "content" type = "string" not-null="true" length="500"/>

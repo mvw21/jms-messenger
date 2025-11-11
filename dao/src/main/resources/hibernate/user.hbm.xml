@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="com.brandmaker.core.app.entities">
+<hibernate-mapping package="com.jmsapp.core.app.entities">
     <class name = "User" table = "users">
 
         <id name = "id" column = "user_id" type = "org.hibernate.type.UUIDCharType" >
