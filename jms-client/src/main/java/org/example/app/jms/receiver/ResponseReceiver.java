@@ -17,9 +17,10 @@ public class ResponseReceiver
         this.context = connectionFactory.createContext();
         JMSConsumer consumer = context.createConsumer(destination);
         consumer.setMessageListener(responseListener);
+        context.start(); // ensure async delivery starts
     }
 
-    public void attachCompletableFuture(String correlationId, CompletableFuture future)
+    public void attachCompletableFuture(String correlationId, CompletableFuture<?> future)
     {
         responseListener.attachCompletableFuture(correlationId, future);
     }

@@ -60,7 +60,7 @@ public class AssertingChannelListener<T>
                     Assertions.fail("No response received for listener");
                 }
                     logger.info("{{{{{{ 3 }}}}}}}");
-                latch.countDown();
+                    latch.countDown();
                     logger.info("{{{{{{ 4 }}}}}}}");
             }
         )

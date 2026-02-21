@@ -58,8 +58,7 @@ public class RequestListener implements MessageListener
     }
 
     //sendResponseToWorker или navigateResponseToWorker
-    private void sendResponseToWorker(String operationName, AbstractDto abstractDto,Message message)
-            throws InvocationTargetException, IllegalAccessException
+    private void sendResponseToWorker(String operationName, AbstractDto abstractDto,Message message) throws InvocationTargetException, IllegalAccessException
     {
         Method correctMethod = findCorrectMethod(operationName);
         CompletableFuture<?> completableFuture = (CompletableFuture<?>)correctMethod.invoke(endpointWorker, abstractDto);
@@ -67,35 +66,37 @@ public class RequestListener implements MessageListener
         getResultFromWorkerAndCompleteTheFuture(completableFuture,message);
     }
 
-    private void getResultFromWorkerAndCompleteTheFuture(CompletableFuture<?> completableFuture,
-            Message message)
+    private void getResultFromWorkerAndCompleteTheFuture(CompletableFuture<?> completableFuture, Message message)
     {
         completableFuture.whenComplete((result, throwable) -> {
-            if (throwable == null)
-            {
-                try
-                {
-                    //gets the result from the worker and send it back to the ResponseDestination queue
+            try {
+                if (throwable == null) {
                     responseSender.sendResponse((AbstractDto) result, message.getJMSReplyTo(), message.getJMSCorrelationID());
-                }
-                catch (JMSException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            else
-            {
-                ErrorDto errorDto = ((MessengerException) throwable).getErrorDto();
-                try
-                {
+                } else {
+                    Throwable cause = (throwable instanceof java.util.concurrent.CompletionException ce && ce.getCause() != null)
+                            ? ce.getCause()
+                            : throwable;
+
+                    ErrorDto errorDto;
+                    if (cause instanceof MessengerException me) {
+                        errorDto = me.getErrorDto();
+                    } else {
+                        // log the unexpected cause so you see the real stack trace
+                        logger.error("Unhandled exception while processing op={}, cid={}",
+                                message.getStringProperty(MsgConstants.OPERATION_NAME),
+                                message.getJMSCorrelationID(), cause);
+                        errorDto = new ErrorDto(
+                                org.example.dtos.ErrorCodesDto.INTERNAL_SERVER_ERROR,
+                                java.util.List.of("Unexpected error. Please try again.")
+                        );
+                    }
                     responseSender.sendResponse(errorDto, message.getJMSReplyTo(), message.getJMSCorrelationID());
                 }
-                catch (JMSException e)
-                {
-                    e.printStackTrace();
-                }
+            } catch (JMSException e) {
+                logger.error("Failed to send response", e);
             }
         });
+
 
     }
 

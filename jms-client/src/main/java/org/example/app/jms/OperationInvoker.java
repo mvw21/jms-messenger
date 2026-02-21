@@ -18,11 +18,19 @@ public class OperationInvoker
         this.responseReceiver = responseReceiver;
     }
 
-    public <T> CompletableFuture<T> invoke(AbstractDto abstractDto, String operationName)
-    {
+//    public <T> CompletableFuture<T> invoke(AbstractDto abstractDto, String operationName)
+//    {
+//        final CompletableFuture<T> cf = new CompletableFuture<>();
+//        String jmsCorrelationID = operationSender.send(abstractDto, operationName);
+//        responseReceiver.attachCompletableFuture(jmsCorrelationID,cf);
+//        return cf;
+//    }
+
+    public <T> CompletableFuture<T> invoke(AbstractDto abstractDto, String operationName) {
+        final String jmsCorrelationID = java.util.UUID.randomUUID().toString();  // 1) make CID here
         final CompletableFuture<T> cf = new CompletableFuture<>();
-        String jmsCorrelationID = operationSender.send(abstractDto, operationName);
-        responseReceiver.attachCompletableFuture(jmsCorrelationID,cf);
+        responseReceiver.attachCompletableFuture(jmsCorrelationID, cf);           // 2) attach FIRST
+        operationSender.sendWithCorrelationId(abstractDto, operationName, jmsCorrelationID); // 3) then send
         return cf;
     }
 }

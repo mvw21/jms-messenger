@@ -34,31 +34,56 @@ public class OperationSender implements AutoCloseable
         this.responseDestination = responseDestination;
     }
 
-    public String send(AbstractDto payload, String operationName)
-    {
-        try(JMSContext ctx = connectionFactory.createContext())
-        {
-            final TextMessage message = createTextMessage(ctx,operationName);
-
+    // New overload:
+    public void sendWithCorrelationId(AbstractDto payload, String operationName, String correlationId) {
+        try (JMSContext ctx = connectionFactory.createContext()) {
+            final TextMessage message = createTextMessage(ctx, operationName, correlationId);
             if (payload != null) {
-                final String msgContent = SerializationProcessor.instance.serialize(payload);
-                message.setText(msgContent);
+                message.setText(SerializationProcessor.instance.serialize(payload));
             }
-
             ctx.createProducer().send(requestDestination, message);
-            return message.getJMSCorrelationID();
-        } catch (Exception e)
-        {
-            final ErrorDto error = new ErrorDto(ErrorCodesDto.INTERNAL_SERVER_ERROR, Collections.singletonList(e.getLocalizedMessage()));
+        } catch (Exception e) {
+            final ErrorDto error = new ErrorDto(ErrorCodesDto.INTERNAL_SERVER_ERROR,
+                    java.util.Collections.singletonList(e.getLocalizedMessage()));
             throw new MessengerException(e, error);
         }
-
     }
 
-    private TextMessage createTextMessage(JMSContext jmsContext, String operationName) throws JMSException
-    {
+
+//    public String send(AbstractDto payload, String operationName)
+//    {
+//        try(JMSContext ctx = connectionFactory.createContext())
+//        {
+//            final TextMessage message = createTextMessage(ctx,operationName);
+//
+//            if (payload != null) {
+//                final String msgContent = SerializationProcessor.instance.serialize(payload);
+//                message.setText(msgContent);
+//            }
+//
+//            ctx.createProducer().send(requestDestination, message);
+//            return message.getJMSCorrelationID();
+//        } catch (Exception e)
+//        {
+//            final ErrorDto error = new ErrorDto(ErrorCodesDto.INTERNAL_SERVER_ERROR, Collections.singletonList(e.getLocalizedMessage()));
+//            throw new MessengerException(e, error);
+//        }
+//
+//    }
+
+//    private TextMessage createTextMessage(JMSContext jmsContext, String operationName) throws JMSException
+//    {
+//        final TextMessage message = jmsContext.createTextMessage();
+//        attachHeaders(message, operationName);
+//        return message;
+//    }
+
+    private TextMessage createTextMessage(JMSContext jmsContext, String operationName, String correlationId) throws JMSException {
         final TextMessage message = jmsContext.createTextMessage();
-        attachHeaders(message, operationName);
+        message.setJMSCorrelationID(correlationId);
+        message.setStringProperty(MsgConstants.OPERATION_NAME, operationName);
+        message.setStringProperty(MsgConstants.CLIENT_ID, clientId);
+        message.setJMSReplyTo(responseDestination);
         return message;
     }
 

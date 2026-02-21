@@ -21,6 +21,7 @@ public class DeserializationProcessor
         if (serializedEntity == null) {
             return null;
         }
+        //json with fully qualified classname , fields
         final ObjectNode classNode = objectMapper.readValue(serializedEntity, ObjectNode.class);
         return jsonTreeDeserialize(classNode);
     }
@@ -34,6 +35,7 @@ public class DeserializationProcessor
             throw new IllegalArgumentException("Missing type qualifier!");
         }
 
+        //fully qualified classname
         final String javaType = classJsonNode.textValue();
 
         Class<?> javaClazz = javaClassCache.get(javaType);
